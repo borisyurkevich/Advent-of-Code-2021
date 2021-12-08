@@ -10,14 +10,19 @@
 import Foundation
 import Algorithms
 
-print("Day 1:")
-
 func readFile(_ name: String) -> String {
     // #file gives you current file path
     let projectURL = URL(fileURLWithPath: #file).deletingLastPathComponent()
     let fileURL = projectURL.appendingPathComponent(name)
     let data = try! Data(contentsOf: fileURL)
     return String(data: data, encoding: .utf8)!
+}
+
+extension String {
+
+    var lines: [String] {
+        split(separator: "\n").map { $0.trimmingCharacters(in: .whitespaces) }
+    }
 }
 
 enum Day1 {
@@ -28,6 +33,70 @@ enum Day1 {
         print("Depth incrases \(count) times")
     }
 }
+
+enum Day2 {
+    static func run() {
+        let input = readFile("day2.test")
+        let movements = input.lines.compactMap(Movement.parse)
+        let tracker = PositionTracker()
+        movements.forEach {
+            tracker.process($0)
+        }
+
+        print("Depths is now \(tracker.depths)")
+        print("Pos is now \(tracker.position)")
+        print("Day 2 answer: \(tracker.depths * tracker.position)")
+    }
+}
+
+class PositionTracker {
+    private(set) var position = 0
+    private(set) var depths = 0
+
+    init() {
+
+    }
+
+    func process(_ mov: Movement) {
+        print("processing \(mov)")
+        switch mov {
+        case .forawrd(let x): position += x
+        case .up(let x): depths -= x
+        case .down(let x): depths += x
+        }
+
+    }
+}
+
+enum Movement {
+
+    case forawrd(Int)
+    case up(Int)
+    case down(Int)
+
+
+    static func parse(_ input: String) -> Self? {
+        let parts = input.split(separator: " ")
+        guard parts.count == 2 else {
+            return nil
+        }
+        guard let amount = Int(parts[1]) else {
+            return nil
+        }
+        switch parts[0] {
+        case "forward": return .forawrd(amount)
+        case "up": return .up(amount)
+        case "down": return .down(amount)
+        default: return nil
+        }
+    }
+}
+
+
+
+
+
+
 
 struct DepthScanner {
     let depths: [Int]
@@ -69,4 +138,4 @@ struct DepthScanner {
     }
 }
 
-Day1.run()
+Day2.run()
