@@ -2,6 +2,8 @@
 //  main.swift
 //  Day01
 //
+//  Answer part 1: 1448, part 2: 1471
+//
 //  Created by Boris Yurkevich on 07/12/2021.
 //
 
@@ -20,9 +22,9 @@ func readFile(_ name: String) -> String {
 
 enum Day1 {
     static func run() {
-        let input = readFile("day1.test")
+        let input = readFile("day1-p2.test")
         let scanner = DepthScanner.parse(input)
-        let count = scanner.increaseCount()
+        let count = scanner.increaseCount(windowSize: 3)
         print("Depth incrases \(count) times")
     }
 }
@@ -33,12 +35,28 @@ struct DepthScanner {
         self.depths = depth
     }
 
-    func increaseCount() -> Int {
-        for pair in depths.adjacentPairs() {
-            print("\(pair.0) -> \(pair.1)")
+    func increaseCount(windowSize: Int = 1) -> Int {
+
+        assert(windowSize > 0)
+        var windowSums: [Int] = []
+        for index in depths.indices {
+            if index < windowSize - 1 {
+                continue
+            }
+            var sum = 0
+            for i in 0..<windowSize {
+                sum += depths[index - i]
+            }
+            windowSums.append(sum)
+
         }
-        return depths.adjacentPairs()
-            .map { $0.1 - $0.0}
+
+        for pair in windowSums.adjacentPairs() {
+            let diff = pair.1 - pair.0
+            print("[\(pair.0) -> \(pair.1)] \(diff)")
+        }
+        return windowSums.adjacentPairs()
+            .map { $1 - $0}
             .filter { $0 > 0 }
             .count
     }
