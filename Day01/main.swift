@@ -9,6 +9,7 @@
 
 import Foundation
 import Algorithms
+import CloudKit
 
 func readFile(_ name: String) -> String {
     // #file gives you current file path
@@ -57,6 +58,10 @@ enum Day3 {
         print("Gamma Rate: \(diagnostics.gammaRate)")
         print("Epsilon Rate: \(diagnostics.epsilonRate)")
         print("Consumption: \(diagnostics.powerConsumption)")
+
+        print("02 generator raing \(diagnostics.o2rating)")
+        print("Co2 scurbber rating \(diagnostics.co2rating)")
+        print("Live support \(diagnostics.liveSupport)")
     }
 }
 
@@ -72,12 +77,16 @@ class Diagnostics {
         gammaRate * epsilonRate
     }
 
+    var liveSupport: UInt {
+        o2rating * co2rating
+    }
+
     var gammaRate: UInt {
         guard !readings.isEmpty else { return 0 }
         var num: UInt = 0
         let width = readings[0].width
         for i in 0 ..< width {
-            let bit = commonBit(at: i)
+            let bit = commonBit(at: i, in: readings)
             num += bit << ((width - 1) - i)
         }
         return num
@@ -85,9 +94,27 @@ class Diagnostics {
 
     var epsilonRate: UInt {
         let bits = (0..<readingWidth).map { i in
-            leastCommonBit(at: i)
+            leastCommonBit(at: i, in: readings)
         }
         return constuctInt(bits: bits)
+    }
+
+    var o2rating: UInt {
+        filterReadings { i, readings in
+            let common = commonBit(at: i, in: readings)
+            return readings.filter { r in
+                r.bit(at: i) == common
+            }
+        }?.value ?? 0
+    }
+
+    var co2rating: UInt {
+        filterReadings { i, readings in
+            let leastCommon = leastCommonBit(at: i, in: readings)
+            return readings.filter { r in
+                r.bit(at: i) == leastCommon
+            }
+        }?.value ?? 0
     }
 
     private func constuctInt(bits: [UInt]) -> UInt {
@@ -97,28 +124,44 @@ class Diagnostics {
         }
     }
 
+    private func filterReadings(using filterBlock: (Int, [Reading]) -> [Reading]) -> Reading? {
+        var filteredReadings = self.readings
+
+        for i in 0..<readingWidth {
+            filteredReadings = filterBlock(i, filteredReadings)
+
+            if filteredReadings.count == 1 {
+                return filteredReadings[0]
+            }
+        }
+
+        return nil
+    }
+
     private lazy var readingWidth: Int = {
         readings.map(\.width).max() ?? 0
     }()
 
-    private func commonBit(at position: Int) -> UInt {
+    private func commonBit(at position: Int, in readings: [Reading]) -> UInt {
         let bits = readings.map { $0.bit(at: position) }
         let sum = bits.reduce(0, +)
         return UInt((Float(sum) / Float(readings.count)).rounded())
     }
 
-    private func leastCommonBit(at position: Int) -> UInt {
-        1 - commonBit(at: position)
+    private func leastCommonBit(at position: Int, in readings: [Reading]) -> UInt {
+        1 - commonBit(at: position, in: readings)
     }
 }
 
 struct Reading {
-    private let value: UInt
+    let value: UInt
     let width: Int
+    let stringValue: String
 
     init(stringValue: String) {
         value = UInt(stringValue, radix: 2)!
         width = stringValue.count
+        self.stringValue = stringValue
     }
 
     func bit(at position: Int) -> UInt {
