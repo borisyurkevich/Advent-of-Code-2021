@@ -298,6 +298,8 @@ enum Day4 {
         let cells: [BingoCell]
         let size: Int
 
+        var isFinished: Bool = false
+
         init(numbers: [Int], boardSize: Int) {
             cells = numbers.map { BingoCell($0) }
             assert(cells.count == boardSize * boardSize)
@@ -358,26 +360,41 @@ enum Day4 {
         let numbers: [Int]
         var boards: [BingoBoard]
 
+        struct WinInfo {
+            let board: BingoBoard
+            let winNumber: Int
+        }
+
         mutating func run() {
+            var wins: [WinInfo] = []
+
             for number in numbers {
                 print("We drew the number: \(number)")
 
                 for (index, board) in boards.enumerated() {
-                    let newBoard = board.evaluating(number)
+                    if board.isFinished {
+                        continue
+                    }
+                    var newBoard = board.evaluating(number)
                     boards[index] = newBoard
 
                     print(newBoard.debugDescription)
                     if newBoard.isWinning {
-                        print("we have a winner!")
-                        let sum = newBoard.cells
-                            .filter { !$0.isMarked }
-                            .map(\.value)
-                            .reduce(0, +)
-                        print("unmarked sum: \(sum)")
-                        print("solution \(sum * number)")
-                        return
+                        newBoard.isFinished = true
+                        wins.append(.init(board: newBoard, winNumber: number))
                     }
+                    boards[index] = newBoard
+                    print(newBoard.debugDescription)
                 }
+            }
+
+            if let lastWin = wins.last {
+                let sum = lastWin.board.cells
+                    .filter { !$0.isMarked }
+                    .map(\.value)
+                    .reduce(0, +)
+                print("unmarked sum: \(sum)")
+                print("solution \(sum * lastWin.winNumber)")
             }
         }
     }
