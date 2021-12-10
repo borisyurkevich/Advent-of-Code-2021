@@ -43,13 +43,92 @@ enum Day2 {
             tracker.process($0)
         }
 
-        print("Depths is now \(tracker.depths)")
-        print("Pos is now \(tracker.position)")
+        print("position is now \(tracker.position)")
+        print("Aim is now \(tracker.aim)")
         print("Day 2 answer: \(tracker.depths * tracker.position)")
     }
 }
 
+enum Day3 {
+    static func run() {
+        let lines = readFile("day3.test").lines
+        let reading = lines.map(Reading.init)
+        let diagnostics = Diagnostics(readings: reading)
+        print("Gamma Rate: \(diagnostics.gammaRate)")
+        print("Epsilon Rate: \(diagnostics.epsilonRate)")
+        print("Consumption: \(diagnostics.powerConsumption)")
+    }
+}
+
+class Diagnostics {
+
+    let readings: [Reading]
+
+    init(readings: [Reading]) {
+        self.readings = readings
+    }
+
+    var powerConsumption: UInt {
+        gammaRate * epsilonRate
+    }
+
+    var gammaRate: UInt {
+        guard !readings.isEmpty else { return 0 }
+        var num: UInt = 0
+        let width = readings[0].width
+        for i in 0 ..< width {
+            let bit = commonBit(at: i)
+            num += bit << ((width - 1) - i)
+        }
+        return num
+    }
+
+    var epsilonRate: UInt {
+        let bits = (0..<readingWidth).map { i in
+            leastCommonBit(at: i)
+        }
+        return constuctInt(bits: bits)
+    }
+
+    private func constuctInt(bits: [UInt]) -> UInt {
+        guard !bits.isEmpty else { return 0 }
+        return bits.enumerated().reduce(0) { (num: UInt, item: (index: Int, bit: UInt)) -> UInt in
+            num + item.bit << ((bits.count - 1) - item.index)
+        }
+    }
+
+    private lazy var readingWidth: Int = {
+        readings.map(\.width).max() ?? 0
+    }()
+
+    private func commonBit(at position: Int) -> UInt {
+        let bits = readings.map { $0.bit(at: position) }
+        let sum = bits.reduce(0, +)
+        return UInt((Float(sum) / Float(readings.count)).rounded())
+    }
+
+    private func leastCommonBit(at position: Int) -> UInt {
+        1 - commonBit(at: position)
+    }
+}
+
+struct Reading {
+    private let value: UInt
+    let width: Int
+
+    init(stringValue: String) {
+        value = UInt(stringValue, radix: 2)!
+        width = stringValue.count
+    }
+
+    func bit(at position: Int) -> UInt {
+        let shiftAmount = (width - 1) - position
+        return (value & (0b1 << shiftAmount)) >> shiftAmount
+    }
+}
+
 class PositionTracker {
+    private(set) var aim = 0
     private(set) var position = 0
     private(set) var depths = 0
 
@@ -60,9 +139,11 @@ class PositionTracker {
     func process(_ mov: Movement) {
         print("processing \(mov)")
         switch mov {
-        case .forawrd(let x): position += x
-        case .up(let x): depths -= x
-        case .down(let x): depths += x
+        case .down(let x): aim += x
+        case .up(let x): aim -= x
+        case .forawrd(let x):
+            position += x
+            depths += (aim * x)
         }
 
     }
@@ -138,4 +219,4 @@ struct DepthScanner {
     }
 }
 
-Day2.run()
+Day3.run()
