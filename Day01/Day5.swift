@@ -19,6 +19,7 @@ enum Day5 {
             print(segment.debugDescription)
             floor.addHydrothermalVentLine(segment)
         }
+
         print(floor.debugDescription)
 
         print("At least 2 lines overlap: ")
@@ -70,22 +71,30 @@ struct LineSegment {
     }
 
     var coordinates: [Coordinate] {
-        // assume no diagonals
-
-        guard start.x == end.x || start.y == end.y else {
-            return []
-        }
-
-        let minX = min(start.x, end.x)
-        let maxX = max(start.x, end.x)
-        let minY = min(start.y, end.y)
-        let maxY = max(start.y, end.y)
-
-        return (minX...maxX).flatMap { x in
-            (minY...maxY).map { y in
-                Coordinate(x: x, y: y)
+        func inc(_ p1 : Int, _ p2: Int) -> Int {
+            let diff = p2 - p1
+            if diff == 0 {
+                return 0
+            } else if diff < 0 {
+                return -1
+            } else {
+                return 1
             }
         }
+
+        let xInc = inc(start.x, end.x)
+        let yInc = inc(start.y, end.y)
+
+        var p = start
+        var coordinates: [Coordinate] = []
+
+        while p != end {//&& (p.x <= maxX && p.y <= maxY) {
+            print("p is \(p)")
+            coordinates.append(p)
+            p = Coordinate(x: p.x + xInc, y: p.y + yInc)
+        }
+        coordinates.append(p)
+        return coordinates
     }
 }
 
