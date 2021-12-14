@@ -429,7 +429,7 @@ enum Day4 {
 }
 
 
-Day5.run()
+Day6.run()
 
 
 extension Int {
