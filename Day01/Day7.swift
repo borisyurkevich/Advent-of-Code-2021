@@ -32,8 +32,11 @@ struct HorizontalAligner {
     }
 
     func costToMove(to target: Int) -> Int {
-        let costs = positions.map { position in
-            abs(target - position)
+        let costs = positions.map { pos -> Int in
+            guard pos != target else { return 0}
+            let distance = abs(target - pos)
+            let cost = (0...distance).reduce(0, +)
+            return cost
         }
 
         for (p, cost) in zip(positions, costs) {
