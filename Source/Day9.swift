@@ -68,9 +68,6 @@ struct HeightMap {
         var knownBaisinCoords: Set<HeightMap.Coordinate> = []
 
         for lowPoint in lowPoints() {
-            var currentBaisinSize = 1
-            let lowPointHeight = height(at: lowPoint)
-
             let basinCoordinates = neighborsSlopingUpward(from: lowPoint) + [lowPoint]
 
             knownBaisinCoords.formUnion(basinCoordinates)

@@ -26,112 +26,113 @@ enum Day5 {
         let count = floor.overlapCount(minOverlaps: 2)
         print("\(count)")
     }
-}
+    
+    struct Coordinate: Hashable, Equatable {
+        let x: Int
+        let y: Int
 
-struct Coordinate: Hashable, Equatable {
-    let x: Int
-    let y: Int
+        static func parse(_ string: String) -> Coordinate? {
+            let parts = string
+                .trimmingCharacters(in: .whitespaces)
+                .split(separator: ",")
+                .compactMap(Int.init)
 
-    static func parse(_ string: String) -> Coordinate? {
-        let parts = string
-            .trimmingCharacters(in: .whitespaces)
-            .split(separator: ",")
-            .compactMap(Int.init)
+            guard parts.count == 2 else {
+                return nil
+            }
 
-        guard parts.count == 2 else {
-            return nil
+            return Coordinate(x: parts[0], y: parts[1])
         }
 
-        return Coordinate(x: parts[0], y: parts[1])
+        var debugDescription: String {
+            "\(x),\(y)"
+        }
     }
 
-    var debugDescription: String {
-        "\(x),\(y)"
-    }
-}
+    struct LineSegment {
+        let start: Coordinate
+        let end: Coordinate
 
-struct LineSegment {
-    let start: Coordinate
-    let end: Coordinate
-
-    static func parse(_ line: String) -> LineSegment? {
-        let coordinates = line.split(separator: ">")
-            .map {
-                String($0)
-                    .trimmingCharacters(in: .whitespaces)
-                    .replacingOccurrences(of: "-", with: "")
-            }
-            .compactMap(Coordinate.parse)
-        guard coordinates.count == 2 else { return nil }
-        return .init(start: coordinates[0], end: coordinates[1])
-    }
-
-    var debugDescription: String {
-        "\(start.debugDescription) -> \(end.debugDescription)"
-    }
-
-    var coordinates: [Coordinate] {
-        func inc(_ p1 : Int, _ p2: Int) -> Int {
-            let diff = p2 - p1
-            if diff == 0 {
-                return 0
-            } else if diff < 0 {
-                return -1
-            } else {
-                return 1
-            }
+        static func parse(_ line: String) -> LineSegment? {
+            let coordinates = line.split(separator: ">")
+                .map {
+                    String($0)
+                        .trimmingCharacters(in: .whitespaces)
+                        .replacingOccurrences(of: "-", with: "")
+                }
+                .compactMap(Coordinate.parse)
+            guard coordinates.count == 2 else { return nil }
+            return .init(start: coordinates[0], end: coordinates[1])
         }
 
-        let xInc = inc(start.x, end.x)
-        let yInc = inc(start.y, end.y)
+        var debugDescription: String {
+            "\(start.debugDescription) -> \(end.debugDescription)"
+        }
 
-        var p = start
-        var coordinates: [Coordinate] = []
+        var coordinates: [Coordinate] {
+            func inc(_ p1 : Int, _ p2: Int) -> Int {
+                let diff = p2 - p1
+                if diff == 0 {
+                    return 0
+                } else if diff < 0 {
+                    return -1
+                } else {
+                    return 1
+                }
+            }
 
-        while p != end {//&& (p.x <= maxX && p.y <= maxY) {
-            print("p is \(p)")
+            let xInc = inc(start.x, end.x)
+            let yInc = inc(start.y, end.y)
+
+            var p = start
+            var coordinates: [Coordinate] = []
+
+            while p != end {//&& (p.x <= maxX && p.y <= maxY) {
+                print("p is \(p)")
+                coordinates.append(p)
+                p = Coordinate(x: p.x + xInc, y: p.y + yInc)
+            }
             coordinates.append(p)
-            p = Coordinate(x: p.x + xInc, y: p.y + yInc)
-        }
-        coordinates.append(p)
-        return coordinates
-    }
-}
-
-struct OceanMap {
-    internal init(width: Int, height: Int) {
-        self.width = width
-        self.height = height
-    }
-
-    let width: Int
-    let height: Int
-
-    private var hydrothermalVentCoordinates: [Coordinate: Int] = [:]
-
-    mutating func addHydrothermalVentLine(_ line: LineSegment) {
-        line.coordinates.forEach { coord in
-            hydrothermalVentCoordinates[coord, default: 0] += 1
+            return coordinates
         }
     }
 
-    func overlapCount(minOverlaps: Int) -> Int {
-        hydrothermalVentCoordinates.filter { (key, value) in
-            value >= minOverlaps
-        }.count
-    }
+    struct OceanMap {
+        internal init(width: Int, height: Int) {
+            self.width = width
+            self.height = height
+        }
 
-    var debugDescription: String {
-//        print("Vent coords: \(hydrothermalVentCoordinates)")
-        var output = ""
-        for y in 0..<height {
-            for x in 0..<width {
-                let coord = Coordinate(x: x, y: y)
-                let mark = hydrothermalVentCoordinates[coord].flatMap(String.init) ?? "."
-                output += mark
+        let width: Int
+        let height: Int
+
+        private var hydrothermalVentCoordinates: [Coordinate: Int] = [:]
+
+        mutating func addHydrothermalVentLine(_ line: LineSegment) {
+            line.coordinates.forEach { coord in
+                hydrothermalVentCoordinates[coord, default: 0] += 1
             }
-            output += "\n"
         }
-        return output
+
+        func overlapCount(minOverlaps: Int) -> Int {
+            hydrothermalVentCoordinates.filter { (key, value) in
+                value >= minOverlaps
+            }.count
+        }
+
+        var debugDescription: String {
+            //        print("Vent coords: \(hydrothermalVentCoordinates)")
+            var output = ""
+            for y in 0..<height {
+                for x in 0..<width {
+                    let coord = Coordinate(x: x, y: y)
+                    let mark = hydrothermalVentCoordinates[coord].flatMap(String.init) ?? "."
+                    output += mark
+                }
+                output += "\n"
+            }
+            return output
+        }
     }
 }
+
