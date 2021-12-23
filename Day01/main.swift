@@ -432,7 +432,8 @@ enum Day4 {
 
 //Day6.run()
 //Day7.run()
-Day9.run()
+//Day9.run()
+Day8.run()
 
 
 extension Int {
