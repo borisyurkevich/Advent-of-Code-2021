@@ -22,6 +22,9 @@ struct DepthScanner {
 
     func increaseCount(windowSize: Int = 1) -> Int {
         return 0
+        //
+        // Requires Algorithms, SPM broken in Xcode 13.2
+        //
 //        assert(windowSize > 0)
 //        var windowSums: [Int] = []
 //        for index in depths.indices {
