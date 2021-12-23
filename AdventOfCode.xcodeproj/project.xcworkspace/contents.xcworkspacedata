@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:">
+      location = "self:/Users/boris/Developer/advent-of-code-2021/Day01/AdventOfCode.xcodeproj">
    </FileRef>
 </Workspace>

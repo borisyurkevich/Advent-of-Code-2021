@@ -33,7 +33,7 @@
 		A1E197A22774B12800EA733A /* Day8.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day8.swift; sourceTree = "<group>"; };
 		A1F812D427640B91007C110E /* Day5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day5.swift; sourceTree = "<group>"; };
 		A1F812D62768DB25007C110E /* Day6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day6.swift; sourceTree = "<group>"; };
-		A1FD9FB5275FCD1200ACF68D /* Day01 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Day01; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1FD9FB5275FCD1200ACF68D /* AdventOfCode */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AdventOfCode; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1FD9FB8275FCD1200ACF68D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -51,7 +51,7 @@
 		A1FD9FAC275FCD1200ACF68D = {
 			isa = PBXGroup;
 			children = (
-				A1FD9FB7275FCD1200ACF68D /* Day01 */,
+				A1FD9FB7275FCD1200ACF68D /* Source */,
 				A1FD9FB6275FCD1200ACF68D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,12 +59,12 @@
 		A1FD9FB6275FCD1200ACF68D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A1FD9FB5275FCD1200ACF68D /* Day01 */,
+				A1FD9FB5275FCD1200ACF68D /* AdventOfCode */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A1FD9FB7275FCD1200ACF68D /* Day01 */ = {
+		A1FD9FB7275FCD1200ACF68D /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				A1FD9FB8275FCD1200ACF68D /* main.swift */,
@@ -74,15 +74,15 @@
 				A1E197A22774B12800EA733A /* Day8.swift */,
 				A1E197A0276CD2C900EA733A /* Day9.swift */,
 			);
-			path = Day01;
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A1FD9FB4275FCD1200ACF68D /* Day01 */ = {
+		A1FD9FB4275FCD1200ACF68D /* AdventOfCode */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1FD9FBC275FCD1200ACF68D /* Build configuration list for PBXNativeTarget "Day01" */;
+			buildConfigurationList = A1FD9FBC275FCD1200ACF68D /* Build configuration list for PBXNativeTarget "AdventOfCode" */;
 			buildPhases = (
 				A1FD9FB1275FCD1200ACF68D /* Sources */,
 				A1FD9FB2275FCD1200ACF68D /* Frameworks */,
@@ -92,11 +92,11 @@
 			);
 			dependencies = (
 			);
-			name = Day01;
+			name = AdventOfCode;
 			packageProductDependencies = (
 			);
 			productName = Day01;
-			productReference = A1FD9FB5275FCD1200ACF68D /* Day01 */;
+			productReference = A1FD9FB5275FCD1200ACF68D /* AdventOfCode */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -114,7 +114,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A1FD9FB0275FCD1200ACF68D /* Build configuration list for PBXProject "Day01" */;
+			buildConfigurationList = A1FD9FB0275FCD1200ACF68D /* Build configuration list for PBXProject "AdventOfCode" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -129,7 +129,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A1FD9FB4275FCD1200ACF68D /* Day01 */,
+				A1FD9FB4275FCD1200ACF68D /* AdventOfCode */,
 			);
 		};
 /* End PBXProject section */
@@ -293,7 +293,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A1FD9FB0275FCD1200ACF68D /* Build configuration list for PBXProject "Day01" */ = {
+		A1FD9FB0275FCD1200ACF68D /* Build configuration list for PBXProject "AdventOfCode" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1FD9FBA275FCD1200ACF68D /* Debug */,
@@ -302,7 +302,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1FD9FBC275FCD1200ACF68D /* Build configuration list for PBXNativeTarget "Day01" */ = {
+		A1FD9FBC275FCD1200ACF68D /* Build configuration list for PBXNativeTarget "AdventOfCode" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1FD9FBD275FCD1200ACF68D /* Debug */,
