@@ -1,8 +1,5 @@
 //
 //  main.swift
-//  Day01
-//
-//  Answer part 1: 1448, part 2: 1471
 //
 //  Created by Boris Yurkevich on 07/12/2021.
 //
