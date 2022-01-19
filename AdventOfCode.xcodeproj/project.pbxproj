@@ -60,6 +60,7 @@
 		A1FD9FAC275FCD1200ACF68D = {
 			isa = PBXGroup;
 			children = (
+				A1363539279806E00049736A /* Readme.md */,
 				A1FD9FB7275FCD1200ACF68D /* Source */,
 				A1FD9FB6275FCD1200ACF68D /* Products */,
 			);
@@ -86,7 +87,6 @@
 				A1E1979E276CAB1B00EA733A /* Day7.swift */,
 				A1E197A22774B12800EA733A /* Day8.swift */,
 				A1E197A0276CD2C900EA733A /* Day9.swift */,
-				A1363539279806E00049736A /* Readme.md */,
 			);
 			path = Source;
 			sourceTree = "<group>";
